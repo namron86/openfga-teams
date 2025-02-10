@@ -1,0 +1,64 @@
+name: Team Hierarchy Tests
+
+model_file: "./model.fga"
+
+tuples: 
+
+  - user: team:A
+    relation: parent
+    object: team:B
+
+  - user: team:B
+    relation: parent
+    object: team:C
+
+  - user: team:C
+    relation: parent
+    object: team:D
+
+  - user: user:Matthew
+    relation: owner
+    object: team:A
+
+  - user: user:Ramsey
+    relation: member
+    object: team:C
+
+tests:
+  - name: "Owner at top of hierarchy can read all opportunities of all subordinate Teams"
+    check: 
+        - user: user:Matthew
+          object: team:A
+          assertions: 
+            can_read_teams_opportunities: true
+        - user: user:Matthew
+          object: team:B
+          assertions: 
+            can_read_teams_opportunities: true
+        - user: user:Matthew
+          object: team:C
+          assertions: 
+            can_read_teams_opportunities: true
+        - user: user:Matthew
+          object: team:D
+          assertions:
+            can_read_teams_opportunities: true
+
+  - name: "Member can only read their Team's opportunities"
+    check:
+        - user: user:Ramsey
+          object: team:A
+          assertions: 
+            can_read_teams_opportunities: false
+        - user: user:Ramsey
+          object: team:B
+          assertions: 
+            can_read_teams_opportunities: false
+        - user: user:Ramsey
+          object: team:C
+          assertions: 
+            can_read_teams_opportunities: true
+        - user: user:Ramsey
+          object: team:D
+          assertions:
+            can_read_teams_opportunities: false

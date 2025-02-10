@@ -1,0 +1,11 @@
+model
+  schema 1.1
+
+type user
+
+type team
+  relations
+    define parent: [team]
+    define owner: [user] or owner from parent
+    define member: [user]
+    define can_read_teams_opportunities: owner or member

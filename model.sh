@@ -1,0 +1,1 @@
+out=$(fga model transform --file=model.fga --input-format=fga --output-format=json) && echo "$out" > model.json
